@@ -19,6 +19,9 @@ public class MainPage {
     private final By ingredientItem = By.className("BurgerIngredient_ingredient__1TVf6");
     private final By header = (By.xpath("//h2[@class='text text_type_main-medium mb-6 mt-10']"));
     private final By tabContainer = (By.xpath("//div[contains(@style, 'display: flex')]"));
+    private final By bunsSection = By.xpath("//h2[text()='Булки']");
+    private final By saucesSection = By.xpath("//h2[text()='Соусы']");
+    private final By fillingsSection = By.xpath("//h2[text()='Начинки']");
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
@@ -40,6 +43,83 @@ public class MainPage {
     public void clickOnFillingButton() {
         clickTab("Начинки");
         waitShort();
+    }
+    @Step("Проверить активность раздела булок")
+    public boolean isBunsSectionActive() {
+        return isSectionActive("Булки");
+    }
+
+    @Step("Проверить активность раздела соусов")
+    public boolean isSaucesSectionActive() {
+        return isSectionActive("Соусы");
+    }
+
+    @Step("Проверить активность раздела начинок")
+    public boolean isFillingsSectionActive() {
+        return isSectionActive("Начинки");
+    }
+    @Step("Получить заголовок активного раздела")
+    public String getActiveSectionTitle() {
+        WebElement active = driver.findElement(activeTab);
+        return active.getText();
+    }
+
+    @Step("Получить количество булок")
+    public int getBunsCount() {
+        return getIngredientsCountBySection("Булки");
+    }
+
+    @Step("Получить количество соусов")
+    public int getSaucesCount() {
+        return getIngredientsCountBySection("Соусы");
+    }
+    @Step("Получить количество начинок")
+    public int getFillingsCount() {
+        return getIngredientsCountBySection("Начинки");
+    }
+
+    @Step("Проверить отображение заголовка раздела булок")
+    public boolean isBunsSectionTitleDisplayed() {
+        return isSectionTitleDisplayed("Булки");
+    }
+
+    @Step("Проверить отображение заголовка раздела соусов")
+    public boolean isSaucesSectionTitleDisplayed() {
+        return isSectionTitleDisplayed("Соусы");
+    }
+    @Step("Проверить отображение заголовка раздела начинок")
+    public boolean isFillingsSectionTitleDisplayed() {
+        return isSectionTitleDisplayed("Начинки");
+    }
+
+    @Step("Проверить активность раздела")
+    private boolean isSectionActive(String sectionName) {
+        try {
+            WebElement active = driver.findElement(activeTab);
+            return active.getText().equals(sectionName);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    @Step("Проверить отображение заголовка раздела")
+    private boolean isSectionTitleDisplayed(String sectionName) {
+        try {
+            By sectionLocator = By.xpath("//h2[text()='" + sectionName + "']");
+            WebElement sectionTitle = driver.findElement(sectionLocator);
+            return sectionTitle.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    @Step("Получить количество ингредиентов в разделе")
+    private int getIngredientsCountBySection(String sectionType) {
+        scrollToSection(sectionType);
+
+        WebElement ingredientsContainer = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(ingredientsList));
+
+        List<WebElement> ingredients = ingredientsContainer.findElements(ingredientItem);
+        return ingredients.size();
     }
 
     @Step("Клик по вкладке")
