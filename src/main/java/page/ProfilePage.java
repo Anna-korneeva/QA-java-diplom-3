@@ -18,6 +18,8 @@ public class ProfilePage {
     private final By exitButton = By.xpath(".//li/button[text()='Выход']");
     // Проверочная надпись для перехода в Личный кабинет
     public final By textOnProfilePage = By.xpath(".//nav/p[text()='В этом разделе вы можете изменить свои персональные данные']");
+    public final By animation = (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']"));
+
 
 
     public ProfilePage(WebDriver driver) {
@@ -31,7 +33,7 @@ public class ProfilePage {
         waitForInvisibilityLoadingAnimation();
     }
 
-    @Step("Клик по кнопке 'Выйти'.")
+    @Step("Клик по кнопке 'Выйти'")
     public void clickOnExitButton() {
         driver.findElement(exitButton).click();
         waitForInvisibilityLoadingAnimation();
@@ -47,8 +49,7 @@ public class ProfilePage {
     @Step("Выставлено ожидание загрузки страницы полностью, анимация исчезнет.")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(ExpectedConditions.invisibilityOfElementLocated
-                        (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
+                .until(ExpectedConditions.invisibilityOfElementLocated(animation));
     }
 }
 

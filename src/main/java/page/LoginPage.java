@@ -32,6 +32,9 @@ public class LoginPage {
 
     private final By forgotPasswordText = By.xpath(".//h2[text()='Восстановление пароля']");
     private final By errorMessage = By.xpath(".//p[contains(@class, 'input__error')]");
+    private final By loginLink = By.xpath(".//a[text()='Войти']");
+    private final By aanimation = (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']"));
+    private final By enterBbutton = (By.xpath(".//a[text()='Войти']"));
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -84,7 +87,6 @@ public class LoginPage {
     @Step("Клик по ссылке 'Зарегистрироваться'")
     public void clickOnRegisterLink() {
         // На странице регистрации используем локатор для ссылки "Войти"
-        By loginLink = By.xpath(".//a[text()='Войти']");
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(loginLink));
         element.click();
@@ -95,7 +97,7 @@ public class LoginPage {
     @Step("Клик по ссылке 'Восстановить пароль'")
     public void clickOnForgotPasswordLink() {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath(".//a[text()='Войти']")));
+                .until(ExpectedConditions.elementToBeClickable(enterBbutton));
         element.click();
     }
 
@@ -305,8 +307,7 @@ public class LoginPage {
     public void waitForInvisibilityLoadingAnimation() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(30))
-                    .until(ExpectedConditions.invisibilityOfElementLocated
-                            (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
+                    .until(ExpectedConditions.invisibilityOfElementLocated(aanimation));
         } catch (Exception e) {
             // Игнорируем исключение, если элемент не найден
         }

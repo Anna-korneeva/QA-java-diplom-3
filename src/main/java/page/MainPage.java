@@ -1,5 +1,6 @@
 package page;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,26 +17,32 @@ public class MainPage {
     private final By tabLocator = By.xpath("//div[contains(@class, 'tab_tab__1SPyG')]");
     private final By ingredientsList = By.className("BurgerIngredients_ingredients__list__2A-mT");
     private final By ingredientItem = By.className("BurgerIngredient_ingredient__1TVf6");
+    private final By header = (By.xpath("//h2[@class='text text_type_main-medium mb-6 mt-10']"));
+    private final By tabContainer = (By.xpath("//div[contains(@style, 'display: flex')]"));
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
+    @Step("Клик по надписи 'Булки'")
     public void clickOnBunsButton() {
         clickTab("Булки");
         waitShort();
     }
 
+    @Step("Клик по надписи 'Соусы'")
     public void clickOnSaucesButton() {
         clickTab("Соусы");
         waitShort();
     }
 
+    @Step("Клик по надписи 'Начинки'")
     public void clickOnFillingButton() {
         clickTab("Начинки");
         waitShort();
     }
 
+    @Step("Клик по вкладке")
     private void clickTab(String tabName) {
         System.out.println("Попытка клика на таб: " + tabName);
 
@@ -58,13 +65,14 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Находим контейнер с вкладками и скроллим к нему")
     private void scrollToTabs() {
-        // Находим контейнер с вкладками и скроллим к нему
-        WebElement tabsContainer = driver.findElement(By.xpath("//div[contains(@style, 'display: flex')]"));
+        WebElement tabsContainer = driver.findElement(tabContainer);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", tabsContainer);
         waitShort();
     }
 
+    @Step("Ожидаем активации вкладки")
     private void waitForTabChange(String expectedTabName) {
         System.out.println("Ожидаем активации таба: " + expectedTabName);
 
@@ -75,6 +83,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Проверяем активность вкладки, заголовок секции, наличие элеменов (Булки)")
     public void checkToppingBun() {
         // Проверяем активность вкладки
         waitForTabActivation("Булки");
@@ -87,6 +96,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Проверяем активность вкладки, заголовок секции, наличие элеменов (Соусы)")
     public void checkToppingSauce() {
         // Проверяем активность вкладки
         waitForTabActivation("Соусы");
@@ -99,6 +109,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Проверяем активность вкладки, заголовок секции, наличие элеменов (Начинки)")
     public void checkToppingFillings() {
         // Проверяем активность вкладки
         waitForTabActivation("Начинки");
@@ -111,6 +122,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Добавили задержку")
     private void waitForTabActivation(String expectedTabName) {
         // Добавляем задержку перед проверкой
         waitShort();
@@ -129,9 +141,10 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Ищем все заголовки и выбираем тот, который отображается")
     private void checkSectionTitle(String expectedTitle) {
-        // Ищем все заголовки и выбираем тот, который отображается
-        List<WebElement> allTitles = driver.findElements(By.xpath("//h2[@class='text text_type_main-medium mb-6 mt-10']"));
+
+        List<WebElement> allTitles = driver.findElements(header);
         boolean titleFound = false;
 
         for (WebElement title : allTitles) {
@@ -148,6 +161,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Проверяем наличие ингридиентов")
     private void checkIngredientsPresence(String sectionType, int minElementsCount) {
         // Сначала скроллим к секции
         scrollToSection(sectionType);
@@ -183,8 +197,9 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Скроллим к заголовку секции")
     private void scrollToSection(String sectionType) {
-        // Скроллим к заголовку секции
+
         By sectionTitleLocator = By.xpath("//h2[text()='" + sectionType + "']");
         WebElement sectionTitle = new WebDriverWait(driver, Duration.ofSeconds(70))
                 .until(ExpectedConditions.presenceOfElementLocated(sectionTitleLocator));
@@ -193,6 +208,7 @@ public class MainPage {
         waitShort();
     }
 
+    @Step("Ожидаем загрузки")
     public void waitForPageLoad() {
         new WebDriverWait(driver, Duration.ofSeconds(70))
                 .until(webDriver -> ((JavascriptExecutor) webDriver)
@@ -200,7 +216,7 @@ public class MainPage {
         waitShort();
     }
 
-    // Вспомогательный метод для явной задержки 5 секунд без Thread.sleep
+    // Вспомогательный метод для явной задержки 5 секунд
     private void waitShort() {
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver -> {

@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Assert;
@@ -5,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import page.LoginPage;
-import utils.DataGenerator;
 import utils.TestUtils;
 import utils.UserManager;
 import model.User;
@@ -35,6 +35,7 @@ public class LoginFromDifferentPlacesTest {
 
     @Test
     @DisplayName("1. Вход по кнопке «Войти в аккаунт» на главной")
+    @Description("Проверка успешного входа по кнопке «Войти в аккаунт» на главной")
     public void loginFromMainPageButtonTest() {
         driver = TestUtils.createDriver();
         loginPage = new LoginPage(driver);
@@ -57,6 +58,7 @@ public class LoginFromDifferentPlacesTest {
 
     @Test
     @DisplayName("2. Вход через кнопку «Личный кабинет»")
+    @Description("Проверка успешного входа по кнопке «Личный кабинет»")
     public void loginFromPersonalAccountButtonTest() {
         driver = TestUtils.createDriver();
         loginPage = new LoginPage(driver);
@@ -79,6 +81,7 @@ public class LoginFromDifferentPlacesTest {
 
     @Test
     @DisplayName("3. Вход через кнопку в форме регистрации")
+    @Description("Проверка успешного входа по кнопке в форме регистрации")
     public void loginFromRegistrationFormButtonTest() {
         driver = TestUtils.createDriver();
         loginPage = new LoginPage(driver);
@@ -101,6 +104,7 @@ public class LoginFromDifferentPlacesTest {
 
     @Test
     @DisplayName("4. Вход через кнопку в форме восстановления пароля")
+    @Description("Проверка успешного входа по кнопке в форме восстановления пароля")
     public void loginFromPasswordRecoveryButtonTest() {
         driver = TestUtils.createDriver();
         loginPage = new LoginPage(driver);

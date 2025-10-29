@@ -1,5 +1,6 @@
 package utils;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import model.User;
@@ -12,7 +13,7 @@ public class UserManager {
         // Устанавливаем базовый URL для всех REST Assured запросов
         RestAssured.baseURI = BASE_URI;
     }
-
+@Step("Создание пользователя")
     public static User createTestUser() {
         String email = DataGenerator.generateRandomEmail();
         String password = DataGenerator.generateRandomPassword(10, 20);
@@ -43,7 +44,7 @@ public class UserManager {
             return user;
         }
     }
-
+    @Step("Удаление пользователя")
     public static void deleteTestUser(User user) {
         if (user != null && user.getAccessToken() != null) {
             try {
@@ -60,6 +61,7 @@ public class UserManager {
         }
     }
 
+    @Step("Удаление пользователя по учетным данным")
     public static void deleteUserByCredentials(String email, String password) {
         try {
             // Сначала логинимся чтобы получить accessToken

@@ -20,6 +20,7 @@ public class RecoverPasswordPage {
     public final By recoverPassword = By.xpath(".//main/div/h2[text()='Восстановление пароля']");
     // Ссылка "Войти"
     private final By loginLink = By.xpath(".//div/p/a[@href = '/login' and text() = 'Войти']");
+    private final By animation = (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']"));
 
 
     public RecoverPasswordPage(WebDriver driver) {
@@ -53,8 +54,7 @@ public class RecoverPasswordPage {
     @Step("Выставлено ожидание загрузки страницы полностью, анимация исчезнет.")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, Duration.ofSeconds (40))
-                .until(ExpectedConditions.invisibilityOfElementLocated
-                        (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
+                .until(ExpectedConditions.invisibilityOfElementLocated(animation));
     }
 
     @Step("Выставлено ожидание загрузки страницы с восстановления пароля.")

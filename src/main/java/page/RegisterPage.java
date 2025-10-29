@@ -20,12 +20,14 @@ public class RegisterPage {
     private final By registerButton = By.xpath(".//button[text()='Зарегистрироваться']");
     public final By errorPasswordText = By.xpath(".//p[text()='Некорректный пароль']");
     public final By registerText = By.xpath(".//h2[text()='Регистрация']");
+    public final By errorLocator = By.xpath(".//p[contains(@class, 'input__error')]");
+    public final By animation = (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']"));
 
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Ввод имени с явным ожиданием
+    @Step("Вводи имени с явным ожиданием")
     public void setName(String name) {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(nameField));
@@ -33,7 +35,7 @@ public class RegisterPage {
         element.sendKeys(name);
     }
 
-    // Ввод Email с явным ожиданием
+    @Step("Вводи email с явным ожиданием")
     public void setEmail(String email) {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(emailField));
@@ -41,7 +43,7 @@ public class RegisterPage {
         element.sendKeys(email);
     }
 
-    // Ввод пароля с явным ожиданием
+    @Step("Вводи пароля с явным ожиданием")
     public void setPassword(String password) {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(passwordField));
@@ -49,7 +51,7 @@ public class RegisterPage {
         element.sendKeys(password);
     }
 
-    // Клик по кнопке "Зарегистрироваться"
+    @Step("Клик по кнопке Зарегистрироваться")
     public void clickOnRegisterButton() {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(registerButton));
@@ -74,15 +76,12 @@ public class RegisterPage {
     @Step("Выставлено ожидание загрузки страницы полностью, анимация исчезнет.")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, Duration.ofSeconds(40))
-                .until(ExpectedConditions.invisibilityOfElementLocated
-                        (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
+                .until(ExpectedConditions.invisibilityOfElementLocated(animation));
     }
 
     @Step("Проверка отображения ошибки")
     public boolean isErrorMessageDisplayed() {
         try {
-            // Локатор для общей ошибки
-            By errorLocator = By.xpath(".//p[contains(@class, 'input__error')]");
             return new WebDriverWait(driver, Duration.ofSeconds(30))
                     .until(ExpectedConditions.visibilityOfElementLocated(errorLocator))
                     .isDisplayed();
@@ -94,14 +93,13 @@ public class RegisterPage {
     @Step("Получение текста ошибки")
     public String getErrorMessageText() {
         try {
-            By errorLocator = By.xpath(".//p[contains(@class, 'input__error')]");
             return driver.findElement(errorLocator).getText();
         } catch (Exception e) {
             return "Ошибка не найдена";
         }
     }
 
-    // Проверка что форма готова к заполнению
+    @Step("Проверка, что форма готова к заполнению")
     public boolean isFormReady() {
         try {
             return driver.findElement(nameField).isDisplayed() &&

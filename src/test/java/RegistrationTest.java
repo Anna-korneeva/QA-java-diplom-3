@@ -1,3 +1,5 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import page.LoginPage;
@@ -21,6 +23,8 @@ public class RegistrationTest {
     }
 
     @Test
+    @DisplayName("Проверка успешной регистрации")
+    @Description("Успешная регистрация и переход на страницу логина")
     public void successfulRegistrationTest() {
         try {
             // Генерация тестовых данных
@@ -57,6 +61,8 @@ public class RegistrationTest {
     }
 
     @Test
+    @DisplayName("Неуспешная регистрация")
+    @Description("Проверка появленя ошибки при вводе пароля меньше 6 символов")
     public void failedRegistrationTest() {
             // Генерация тестовых данных
             String name = DataGenerator.generateRandomName();
